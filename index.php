@@ -81,6 +81,98 @@ add_shortcode('MacDownload', 'MacDownload');
 
 
 
+//Download files using Javascript
+<script>
+var isLoggedIn = <?php echo json_encode(is_user_logged_in()) ?>;
+// console.log(document.url)
+if (isLoggedIn) {
+    //// Button for Window Download
+    const btnn = document.getElementById('windowdownload');
+	const urll = '<?php echo do_shortcode("[windowsDownload]")?>';
+
+	btnn.addEventListener('click', (event) => {
+		event.preventDefault();
+		console.log('ABC')
+		windowdownload(urll);
+	})
+	function windowdownload(urll) {
+		fetch(urll, {
+				mode: 'no-cors',
+			})
+			.then(response => response.blob())
+			.then(blob => {
+				let blobUrl = window.URL.createObjectURL(blob);
+				let a = document.createElement('a');
+				a.download = urll.replace(/^.*[\\\/]/, '');
+				a.href = blobUrl;
+				document.body.appendChild(a);
+				a.click();
+				a.remove();
+			})
+	}
+    // Button for Mac Download
+    const btn2 = document.getElementById('macdownload');
+	const url2 ='<?php echo do_shortcode("[MacDownload]")?>';
+	// const url2 = "https://s3-ap-southeast-1.amazonaws.com/tksproduction/bmtimages/pY3BnhPQYpTxasKfx.jpeg";
+	btn2.addEventListener('click', (event) => {
+		event.preventDefault();
+		console.log('ABC')
+		windowdownload(url2);
+	})
+	function windowdownload(url2) {
+		fetch(url2, {
+				mode: 'no-cors',
+			})
+			.then(response => response.blob())
+			.then(blob => {
+				let blobUrl = window.URL.createObjectURL(blob);
+				let a = document.createElement('a');
+				a.download = url2.replace(/^.*[\\\/]/, '');
+				a.href = blobUrl;
+				document.body.appendChild(a);
+				a.click();
+				a.remove();
+			})
+	}
+}
+
+else {
+   
+    const btn = document.getElementById('windowdownload');
+    const btnn2 = document.getElementById('macdownload');
+    function redirectlink()
+    {
+       //console.log("no") 
+	   localStorage.clear();
+	   localStorage.setItem("windowdownload", "window");
+		// alert(window.location.href = "<?php echo get_site_url()?>/my-account/");
+		// window.location.href = "<?php echo get_site_url()?>/my-account/"
+		window.location.replace("<?php echo get_site_url()?>/my-account/");
+	
+    //    alert("Please Log in first")
+    }
+	function redirectlink2()
+    {
+       //console.log("no") 
+	   localStorage.clear();
+	   localStorage.setItem("macdownload", "mac");
+	//    alert(window.location.href = "<?php echo get_site_url()?>/my-account/");
+		//    window.location.href = "<?php echo get_site_url()?>/my-account/"
+		window.location.replace("<?php echo get_site_url()?>/my-account/");
+	  
+    //    alert("Please Log in first")
+    }
+     
+    btn.addEventListener("click",redirectlink)
+    btnn2.addEventListener("click",redirectlink2)
+    
+   
+}
+	
+</script>
+
+
+
 
 
 
